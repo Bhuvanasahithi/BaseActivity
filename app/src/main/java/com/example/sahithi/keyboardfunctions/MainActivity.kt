@@ -4,36 +4,35 @@ import android.annotation.TargetApi
 import android.app.ActionBar
 import android.app.SearchManager
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.annotation.RequiresApi
-import android.widget.TextView
-import android.widget.Toolbar
 import java.util.concurrent.TimeoutException
-import android.widget.LinearLayout
 import android.graphics.Typeface
 import android.support.v4.app.NavUtils
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.*
-import android.widget.SearchView
+import android.widget.*
 
 
-class MainActivity : AppCompatActivity() {
-    lateinit var textView:TextView
+class MainActivity : BaseActivity() {
+
     var recyclerView: RecyclerView? =null
     var layoutManager: RecyclerView.LayoutManager? = null
     var recyclerviewAdapter: RecyclerviewAdapter? = null
     var searchview: SearchView? =null
     var months=ArrayList<String>()
-
+    var btn_next: Button? = null
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        Log.e("activity","Mainactivity")
         months!!.add("January")
         months!!.add("February")
         months!!.add("March")
@@ -46,22 +45,18 @@ class MainActivity : AppCompatActivity() {
         months!!.add("October")
         months!!.add("November")
         months!!.add("December")
-        textView=TextView(this)
+        btn_next=findViewById(R.id.next) as Button
+        btn_next!!.setOnClickListener({
+            var intent= Intent(this@MainActivity,Request::class.java)
+            startActivity(intent)
+        })
+
         recyclerView= findViewById(R.id.recyclerview)
         recyclerviewAdapter= RecyclerviewAdapter(this,months)
         layoutManager=LinearLayoutManager(this)
        recyclerView!!.adapter=recyclerviewAdapter
         recyclerView!!.layoutManager=layoutManager
-        textView.text = resources.getString(R.string.app_name)
-        textView.textSize = 20f
-        textView.setTypeface(null, Typeface.BOLD)
-        textView.layoutParams =LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-        textView.gravity = Gravity.CENTER
-        textView.setTextColor(Color.WHITE)
-        supportActionBar!!.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
-        supportActionBar!!.customView = textView
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        supportActionBar!!.setDisplayShowHomeEnabled(true)
+
 
     }
 
